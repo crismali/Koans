@@ -15,8 +15,20 @@
 #
 def triangle(a, b, c)
   # WRITE THIS CODE
+  if a <= 0 || b <= 0 || c <= 0
+    raise TriangleError, "No length can be zero or negative"
+  elsif a + b <= c || b + c <= a || a + c <= b
+    raise TriangleError, "The sum of any 2 sides cannot be less than or equal to the third side"
+  elsif a == b && b == c
+    return :equilateral
+  elsif a == b || b == c || c == a
+    return :isosceles
+  else
+    return :scalene
+    end
 end
 
 # Error class used in part 2.  No need to change this code.
 class TriangleError < StandardError
+
 end
