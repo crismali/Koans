@@ -31,7 +31,47 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 
 def score(dice)
   # You need to write this method
+
+  score_hash = { :triple => 0, :fives => 0, :ones => 0, :score => 0}
+  dice_clone = dice
+
+  dice.each do |die|
+    count = 0
+    dice_clone.select do |die_clone|
+      count += 1 if die_clone == die
+    end
+    score_hash[:triple] = die if count >= 3
+  end
+
+  if score_hash[:triple] == 1
+    score_hash[:score] += 1000
+  else
+    score_hash[:score] += score_hash[:triple] * 100
+  end
+
+    count1 = 0
+    count5 = 0
+  dice.each do |die|
+    if die == 1
+      count1 += 1
+    elsif die == 5
+      count5 += 1
+    end
+  end
+  score_hash[:ones] = count1
+  score_hash[:fives] = count5
+
+  score_hash[:ones] -= 3 if score_hash[:triple] == 1
+  score_hash[:fives] -= 3 if score_hash[:triple] == 5
+
+  score_hash[:score] += score_hash[:ones] * 100
+  score_hash[:score] += score_hash[:fives] * 50
+
+  return score_hash[:score]
 end
+
+
+
 
 class AboutScoringProject < EdgeCase::Koan
   def test_score_of_an_empty_list_is_zero
